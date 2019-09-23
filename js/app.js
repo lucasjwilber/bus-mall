@@ -129,7 +129,7 @@ function productSelected(event) {
 
 function renderResults() {
   var ul = document.createElement('ul');
-  ul.textContent = 'Results:';
+  ul.textContent = 'Thanks for playing! Results:';
   resultsArea.appendChild(ul);
 
   for (var i = 0; i < catalog.length; i++) {

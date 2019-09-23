@@ -1,31 +1,57 @@
+/*
+FONTS:
+headline: font-family: 'Monoton', cursive;
+subheader: font-family: 'Luckiest Guy', cursive;
+data: font-family: 'PT Sans Narrow', sans-serif;
+
+COLORS:
+darkest: #670500;
+dark: #C80A00;
+medium: #FF2B20;
+light: #FF8A84;
+lightest: #FFFFFF;
+*/
 body {
   width: 960px;
   margin: 0 auto;
-  background-color: lightgray;
+  background-color: #FF2B20;
   text-align: center;
 }
 img {
-  width: 250px;
+  width: 200px;
   float: left;
   margin: 10px;
 }
 header {
+  background-color: #C80A00;
   width: 100%;
 }
 p {
   width: 100%;
   margin: 20px auto;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 30px;
+  color: lightgoldenrodyellow;
 }
 #displayArea {
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
+  background-color: #C80A00;
 }
 h1 {
-  font-size: 40px;
+  font-size: 80px;
+  color: #FFFFFF;
+  font-family: 'Monoton', cursive;
 }
 #results {
-  margin: 0 auto;
-  background-color: black;
-  color: white;
+  width: 40%;
+  margin: 10px auto;
+  background-color: #FF8A84;
+  color: #670500;
+  font-size: 20px;
+  font-family: 'PT Sans Narrow', sans-serif;
+}
+li {
+  padding: 3px;
 }
