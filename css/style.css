@@ -12,11 +12,11 @@ light: #FF8A84;
 lightest: #FFFFFF;
 */
 body {
-  background-color: #FF8A84;
+  background-color: #C80A00;
 }
 #gameBox {
   width: 960px;
-  margin: 0 auto;
+  margin: 30px auto;
   background-color: #FF2B20;
   text-align: center;
 }
@@ -43,8 +43,8 @@ p {
   background-color: #C80A00;
 }
 h1 {
-  font-size: 80px;
-  color: #FFFFFF;
+  font-size: 100px;
+  color: yellow;
   font-family: 'Monoton', cursive;
 }
 #results {
@@ -62,4 +62,11 @@ li {
   position: absolute;
   top: 20;
   left: 20;
+}
+#roundsForm, input {
+  margin-left: 5px;
+  margin-bottom: 3px;
+  font-family: 'PT Sans Narrow', sans-serif;
+  color: #FF2B20;
+  background-color:  #C80A00;
 }

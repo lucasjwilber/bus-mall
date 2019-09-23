@@ -4,7 +4,7 @@ var numberOfRounds = 25;
 var currentRound = 0;
 var catalog = [];
 var resultsArea = document.getElementById('results');
-var numberOfOptions = 5;
+var numberOfOptions = 3;
 var previousProducts = [];
 var currentProducts = [];
 var displayArea = document.getElementById('displayArea');
@@ -111,12 +111,51 @@ function renderResults() {
 
   for (var i = 0; i < catalog.length; i++) {
     var li = document.createElement('li');
-    var percentage = Math.round(catalog[i].clicks / catalog[i].views * 100);
+
+    //to avoid dividing by 0:
+    var percentage = 0;
+    if (catalog[i].clicks > 0) {
+      percentage = Math.round((catalog[i].clicks / catalog[i].views) * 100);
+    }
+
     li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
     ul.appendChild(li);
   }
 
+}  // <--why tf is this } red?
+
+
+//forms stuff:
+var roundsField = document.getElementById('numberOfRoundsField');
+var optionsField = document.getElementById('numberOfOptionsField');
+var roundsForm = document.getElementById('roundsForm');
+roundsForm.addEventListener('submit', restartGame);
+
+function restartGame(event) {
+  event.preventDefault();
+  currentRound = 0;
+  numberOfRounds = event.target.numberOfRoundsField.value;
+  numberOfOptions = event.target.numberOfOptionsField.value;
+  resetObjectValues();
+  selectRandomProducts();
 }
+
+
+
+
+
+function resetObjectValues() {
+  for (var l = 0; l < catalog.length; l++) {
+    catalog[l].isRepeat = false;
+    catalog[l].isDuplicate = false;
+    catalog[l].clicks = 0;
+    catalog[l].views = 0;
+    previousProducts = [];
+    currentProducts = [];
+  }
+}
+
+
 
 
 
