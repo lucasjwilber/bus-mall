@@ -1,4 +1,31 @@
+body {
+  width: 960px;
+  margin: 0 auto;
+  background-color: lightgray;
+  text-align: center;
+}
 img {
-  height: 200px;
+  height: 175px;
   float: left;
+}
+header {
+  width: 100%;
+}
+p {
+  width: 100%;
+  margin: 20px auto;
+}
+#displayArea {
+  width: 80%;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: yellow;
+}
+h1 {
+  font-size: 40px;
+}
+#results {
+  margin: 0 auto;
+  background-color: black;
+  color: white;
 }

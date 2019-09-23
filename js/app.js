@@ -1,12 +1,16 @@
 'use strict';
 
 
-
+var numberOfRounds = 25;
+var currentRound = 0;
 var catalog = [];
+var resultsArea = document.getElementById('results');
 
 function Product(name, image) {
   this.name = name;
   this.image = image;
+  this.clicks = 0;
+  this.views = 0;
   this.isDuplicate = false;
   this.isRepeat = false;
   catalog.push(this);
@@ -14,8 +18,8 @@ function Product(name, image) {
 
 
 function randomProduct() {
-  //added +1 becuase of math.floor
-  var randomNumber = Math.floor(Math.random() * (catalog.length + 1));
+  //may need to revise this, not sure if it's min-max inclusive?
+  var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
 }
 
@@ -35,6 +39,7 @@ var currentProducts = [];
 function selectRandomProducts() {
 
 
+  resetImages();
 
   //select a random product X many times
   for (var i = 0; i < numberOfOptions; i++) {
@@ -47,8 +52,9 @@ function selectRandomProducts() {
     } while (
       //if the product is a duplicate or was in last selection, retry
       (product.isDuplicate === true) || (product.isRepeat === true)
-    )
+    );
     //once a product is selected, mark it as a duplicate for this round
+    product.views++;
     product.isDuplicate = true;
     currentProducts.push(product);
 
@@ -79,50 +85,60 @@ function selectRandomProducts() {
 
 
 
-// var displayArea = document.getElementById('displayArea');
-// displayArea.addEventListener('click', productSelected);
+var displayArea = document.getElementById('displayArea');
+displayArea.addEventListener('click', productSelected);
 
 
 
-// function resetImages() {
-//   var displayAreaChild = displayArea.firstElementChild;
-//   while (displayAreaChild) {
-//     displayAreaChild.remove();
-//     displayAreaChild = displayArea.firstElementChild;
-//   }
-// }
+function resetImages() {
+  var displayAreaChild = displayArea.firstElementChild;
+  while (displayAreaChild) {
+    displayAreaChild.remove();
+    displayAreaChild = displayArea.firstElementChild;
+  }
+}
 
 
 
-// function renderProducts() {
-//   //remove any previously displayed images first
-//   resetImages();
+
+function productSelected(event) {
+  console.log("click!");
+
+  var selection = event.target.src.split('img/');
+  console.log(selection);
+  currentRound++;
+
+  for (var i = 0; i < catalog.length; i++) {
+    if (selection[1] === catalog[i].image.split('/')[1]) {
+      catalog[i].clicks++;
+    }
+  }
+  
+  if (currentRound < numberOfRounds) {
+    selectRandomProducts();
+  } else {
+    renderResults();
+    displayArea.removeEventListener('click', productSelected);
+  }
+  console.log(`round ${currentRound} of ${numberOfRounds}`);
+  //update its stats
+  //run renderProducts() again
+}
+
+function renderResults() {
+  var ul = document.createElement('ul');
+  ul.textContent = 'Results:';
+  resultsArea.appendChild(ul);
+
+  for (var i = 0; i < catalog.length; i++) {
+    var li = document.createElement('li');
+    li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views.`;
+    ul.appendChild(li);
+  }
+
+}
 
 
-//   //for each product in randomlyGeneratedProducts:
-
-//   var img1 = document.createElement('img');
-//   img1.src = `img/${this.image}`;
-//   displayArea.appendChild(img1);
-
-
-//   //productX.src = productX.image;
-// }
-
-
-
-// function productSelected(event) {
-
-//   //for loop that compares each image with what was clicked on to figure out what it is
-
-//   //when a product is clicked:
-//   //get the target of the one that was clicked
-//   //update its stats
-//   //run renderProducts() again
-// }
-
-
-// //add a tag.removeEventListener for the end
 
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
@@ -144,3 +160,5 @@ new Product('unicorn', 'img/unicorn.jpg');
 new Product('usb', 'img/usb.gif');
 new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
+
+selectRandomProducts();
