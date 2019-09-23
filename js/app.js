@@ -13,6 +13,7 @@ displayArea.addEventListener('click', productSelected);
 
 
 
+
 function Product(name, image) {
   this.name = name;
   this.image = image;
@@ -25,11 +26,15 @@ function Product(name, image) {
 
 
 
+
+
 function randomProduct() {
   //may need to revise this, not sure if it's min-max inclusive?
   var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
 }
+
+
 
 
 
@@ -72,6 +77,8 @@ function selectRandomProducts() {
 
 
 
+
+
 function resetImages() {
   var displayAreaChild = displayArea.firstElementChild;
   while (displayAreaChild) {
@@ -82,25 +89,31 @@ function resetImages() {
 
 
 
+
+
 function productSelected(event) {
-  var selection = event.target.src.split('img/');
-  console.log(selection);
-  currentRound++;
+  if (event.target.src) {
+    var selection = event.target.src.split('img/');
+    currentRound++;
 
-  for (var i = 0; i < catalog.length; i++) {
-    if (selection[1] === catalog[i].image.split('/')[1]) {
-      catalog[i].clicks++;
+    for (var i = 0; i < catalog.length; i++) {
+      if (selection[1] === catalog[i].image.split('/')[1]) {
+        catalog[i].clicks++;
+      }
     }
-  }
 
-  if (currentRound < numberOfRounds) {
-    selectRandomProducts();
+    if (currentRound < numberOfRounds) {
+      selectRandomProducts();
+    } else {
+      renderResults();
+      displayArea.removeEventListener('click', productSelected);
+    }
   } else {
-    renderResults();
-    displayArea.removeEventListener('click', productSelected);
+    console.log('nothing of importance was clicked on');
   }
-  console.log(`round ${currentRound} of ${numberOfRounds}`);
 }
+
+
 
 
 
@@ -122,12 +135,12 @@ function renderResults() {
     ul.appendChild(li);
   }
 
-}  // <--why tf is this } red?
+}
+
+
 
 
 //forms stuff:
-var roundsField = document.getElementById('numberOfRoundsField');
-var optionsField = document.getElementById('numberOfOptionsField');
 var roundsForm = document.getElementById('roundsForm');
 roundsForm.addEventListener('submit', restartGame);
 
