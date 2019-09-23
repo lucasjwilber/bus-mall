@@ -5,8 +5,9 @@ body {
   text-align: center;
 }
 img {
-  height: 175px;
+  width: 250px;
   float: left;
+  margin: 10px;
 }
 header {
   width: 100%;
@@ -16,10 +17,9 @@ p {
   margin: 20px auto;
 }
 #displayArea {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  background-color: yellow;
 }
 h1 {
   font-size: 40px;

@@ -1,10 +1,14 @@
 'use strict';
 
-
 var numberOfRounds = 25;
 var currentRound = 0;
 var catalog = [];
 var resultsArea = document.getElementById('results');
+var numberOfOptions = 5;
+var previousProducts = [];
+var currentProducts = [];
+
+
 
 function Product(name, image) {
   this.name = name;
@@ -15,6 +19,7 @@ function Product(name, image) {
   this.isRepeat = false;
   catalog.push(this);
 }
+
 
 
 function randomProduct() {
@@ -32,9 +37,6 @@ function randomProduct() {
 //render function then replaces previous images array contents with what's displayed
 
 
-var numberOfOptions = 3;
-var previousProducts = [];
-var currentProducts = [];
 
 function selectRandomProducts() {
 
@@ -132,7 +134,8 @@ function renderResults() {
 
   for (var i = 0; i < catalog.length; i++) {
     var li = document.createElement('li');
-    li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views.`;
+    var percentage = Math.round(catalog[i].clicks / catalog[i].views * 100);
+    li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
     ul.appendChild(li);
   }
 
