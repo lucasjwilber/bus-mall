@@ -12,6 +12,9 @@ light: #FF8A84;
 lightest: #FFFFFF;
 */
 body {
+  background-color: #FF8A84;
+}
+#gameBox {
   width: 960px;
   margin: 0 auto;
   background-color: #FF2B20;
@@ -54,4 +57,9 @@ h1 {
 }
 li {
   padding: 3px;
+}
+#roundsForm {
+  position: absolute;
+  top: 20;
+  left: 20;
 }

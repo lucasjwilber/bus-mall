@@ -7,6 +7,9 @@ var resultsArea = document.getElementById('results');
 var numberOfOptions = 5;
 var previousProducts = [];
 var currentProducts = [];
+var displayArea = document.getElementById('displayArea');
+displayArea.addEventListener('click', productSelected);
+
 
 
 
@@ -28,26 +31,15 @@ function randomProduct() {
   return catalog[randomNumber];
 }
 
-//numberOfOptions parameter to adjust number of products presented, default 3
-
-//pick an image
-//if it's a duplicate within current comparison repick
-//if it's one of the previous images repick
-
-//render function then replaces previous images array contents with what's displayed
-
 
 
 function selectRandomProducts() {
-
-
+  //remove the previous one first
   resetImages();
 
   //select a random product X many times
   for (var i = 0; i < numberOfOptions; i++) {
-
     var productImage = document.createElement('img');
-
     //select a random product from the catalog
     do {
       var product = randomProduct();
@@ -59,36 +51,24 @@ function selectRandomProducts() {
     product.views++;
     product.isDuplicate = true;
     currentProducts.push(product);
-
     productImage.src = product.image;
     displayArea.appendChild(productImage);
   }
-  
-  console.table(currentProducts);
-  
-  
+
   //unset the isDuplicate flag on what was selected this round and mark them as repeats to prepare for next round
-  for (var i = 0; i < currentProducts.length; i++) {
-    currentProducts[i].isDuplicate = false;
-    currentProducts[i].isRepeat = true;
+  for (var j = 0; j < currentProducts.length; j++) {
+    currentProducts[j].isDuplicate = false;
+    currentProducts[j].isRepeat = true;
   }
 
   //reset the isRepeat flags for the previous products
-  for (var i = 0; i < previousProducts.length; i++) {
-    previousProducts[i].isRepeat = false;
+  for (var k = 0; k < previousProducts.length; k++) {
+    previousProducts[k].isRepeat = false;
   }
   //now that previousProducts has fulfilled its purpose, update/replace it with contents of currentProducts and reset currentProducts
   previousProducts = currentProducts;
   currentProducts = [];
-
 }
-
-
-
-
-
-var displayArea = document.getElementById('displayArea');
-displayArea.addEventListener('click', productSelected);
 
 
 
@@ -102,10 +82,7 @@ function resetImages() {
 
 
 
-
 function productSelected(event) {
-  console.log("click!");
-
   var selection = event.target.src.split('img/');
   console.log(selection);
   currentRound++;
@@ -115,7 +92,7 @@ function productSelected(event) {
       catalog[i].clicks++;
     }
   }
-  
+
   if (currentRound < numberOfRounds) {
     selectRandomProducts();
   } else {
@@ -123,9 +100,9 @@ function productSelected(event) {
     displayArea.removeEventListener('click', productSelected);
   }
   console.log(`round ${currentRound} of ${numberOfRounds}`);
-  //update its stats
-  //run renderProducts() again
 }
+
+
 
 function renderResults() {
   var ul = document.createElement('ul');

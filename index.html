@@ -5,25 +5,38 @@
   <title>Bus Mall</title>
   <link rel="stylesheet" type="text/css" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Monoton|PT+Sans+Narrow&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Monoton|PT+Sans+Narrow&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
-  <header>
-    <h1>Bus Mall</h1>
-  </header>
+  <form id="roundsForm">
+    <fieldset>
+      Number of options:<br>
+      <input type="number" value="3" name="numberOfOptionsField" required><br>
+      Number of rounds:<br>
+      <input type="number" value="25" name="numberOfRoundsField" required><br>
+      <input type="button" value="Restart Game" name="resetButton">
+    </fieldset>
+  </form>
 
-  <p>Of the products below, which would you be most likely to buy?</p>
+  <div id="gameBox">
 
-  <main id="displayArea"></main>
-  
+    <header>
+      <h1>Bus Mall</h1>
+    </header>
 
-  <section id="results">
-  </section>
+    <p>Of the products below, which would you be most likely to buy?</p>
+
+    <main id="displayArea"></main>
 
 
+    <section id="results">
+    </section>
 
-<script src="js/app.js"></script>
+  </div>
+
+  <script src="js/app.js"></script>
 </body>
 
 </html>
