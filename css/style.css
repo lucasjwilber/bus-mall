@@ -28,10 +28,11 @@ img {
 header {
   background-color: #C80A00;
   width: 100%;
+  margin-top: 30px;
 }
 p {
   width: 100%;
-  margin: 20px auto;
+  margin: 0 auto;
   font-family: 'Luckiest Guy', cursive;
   font-size: 30px;
   color: lightgoldenrodyellow;
@@ -67,6 +68,6 @@ li {
   margin-left: 5px;
   margin-bottom: 3px;
   font-family: 'PT Sans Narrow', sans-serif;
-  color: #FF2B20;
+  color: #FFFFFF;
   background-color:  #C80A00;
 }
