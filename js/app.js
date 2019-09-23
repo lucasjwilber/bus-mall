@@ -2,8 +2,7 @@
 
 
 
-Product.allProducts = [];
-var catalog = Product.allProducts;
+var catalog = [];
 
 function Product(name, image) {
   this.name = name;
@@ -17,7 +16,6 @@ function Product(name, image) {
 function randomProduct() {
   //added +1 becuase of math.floor
   var randomNumber = Math.floor(Math.random() * (catalog.length + 1));
-  console.log(randomProduct);
   return catalog[randomNumber];
 }
 
@@ -36,13 +34,6 @@ var currentProducts = [];
 
 function selectRandomProducts() {
 
-  //wipe the currentProducts array
-  currentProducts = [];
-
-  //starting a new round, set all isDuplicates. only the ones in previousProducts should have been changed
-  for (var i = 0; i < previousProducts.length; i++) {
-    previousProducts[i].isDuplicate = false;
-  }
 
 
   //select a random product X many times
@@ -54,40 +45,37 @@ function selectRandomProducts() {
     do {
       var product = randomProduct();
     } while (
-      //if the product is a duplicate or was in last selection, repeat this loop
-      (product.isDuplicate === true) && (product.isRepeat === true)
+      //if the product is a duplicate or was in last selection, retry
+      (product.isDuplicate === true) || (product.isRepeat === true)
     )
-
+    //once a product is selected, mark it as a duplicate for this round
     product.isDuplicate = true;
     currentProducts.push(product);
 
     productImage.src = product.image;
     displayArea.appendChild(productImage);
   }
-
-//now that we have 3 products selected, we can unset the isDuplicate flag and mark them as repeats to prepare for next round
+  
+  console.table(currentProducts);
+  
+  
+  //unset the isDuplicate flag on what was selected this round and mark them as repeats to prepare for next round
   for (var i = 0; i < currentProducts.length; i++) {
     currentProducts[i].isDuplicate = false;
     currentProducts[i].isRepeat = true;
   }
 
-
-  //now that previousProducts has fulfilled its purpose, update/replace it with contents of currentProducts
+  //reset the isRepeat flags for the previous products
+  for (var i = 0; i < previousProducts.length; i++) {
+    previousProducts[i].isRepeat = false;
+  }
+  //now that previousProducts has fulfilled its purpose, update/replace it with contents of currentProducts and reset currentProducts
   previousProducts = currentProducts;
-
-
+  currentProducts = [];
 
 }
 
 
-
-//for loop to do this x amount of times:
-//1. select a random number from allProducts array that wasn't part of the last selected group
-//2. do {select another random number} while (number isn't the last number or part of the last selection)
-//3 .do {select another random number} while (number isn't either of the last 2 numbers or part of the last selection)
-//4. repeat until x
-//var imageX = product, so that you can increment that product's clicks/views after
-//push them into an array randomlyGeneratedProducts
 
 
 
@@ -143,7 +131,7 @@ new Product('boots', 'img/boots.jpg');
 new Product('breakfast', 'img/breakfast.jpg');
 new Product('bubblegum', 'img/bubblegum.jpg');
 new Product('chair', 'img/chair.jpg');
-new Product('cthulu', 'img/cthulu.jpg');
+new Product('cthulhu', 'img/cthulhu.jpg');
 new Product('dog-duck', 'img/dog-duck.jpg');
 new Product('dragon', 'img/dragon.jpg');
 new Product('pen', 'img/pen.jpg');
