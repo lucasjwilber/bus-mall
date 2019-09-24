@@ -5,13 +5,15 @@ subheader: font-family: 'Luckiest Guy', cursive;
 data: font-family: 'PT Sans Narrow', sans-serif;
 
 COLORS:
-darkest: #670500;
-dark: #C80A00;
-medium: #FF2B20;
-light: #FF8A84;
-lightest: #FFFFFF;
+darkest: #042037;
+dark: #123552;
+medium: #2A4F6E;
+light: #496C89;
+lightest: #728DA5;
 */
-
+body {
+  background-image: linear-gradient(rgb(172, 183, 192), #2A4F6E);
+}
 #gameBox {
   width: 960px;
   margin: 30px auto;
@@ -21,6 +23,7 @@ img {
   width: 200px;
   float: left;
   margin: 10px;
+  border: 5px ridge #2A4F6E;
 }
 header {
   width: 100%;
@@ -31,6 +34,7 @@ p {
   margin: 0 auto;
   font-family: 'Luckiest Guy', cursive;
   font-size: 30px;
+  color: #123552;
 }
 #displayArea {
   width: 100%;
@@ -42,6 +46,7 @@ p {
 h1 {
   font-size: 100px;
   font-family: 'Monoton', cursive;
+  color: white;
 }
 /* this is the results ul:
 #results {
@@ -64,7 +69,7 @@ li {
   margin-left: 5px;
   margin-bottom: 3px;
   font-family: 'PT Sans Narrow', sans-serif;
-  color: #FFFFFF;
+  color: #2A4F6E;
 }
 canvas {
   margin-top: 50px;

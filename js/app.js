@@ -339,9 +339,26 @@ function renderChart() {
       }]
     },
     options: {
+      legend: {
+        labels: {
+          fontColor: "white",
+          fontSize: 18
+        }
+      },
       scales: {
         yAxes: [{
           ticks: {
+            fontColor: "white",
+            fontSize: 18,
+            stepSize: 1,
+            beginAtZero: true
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            fontColor: "white",
+            fontSize: 14,
+            stepSize: 1,
             beginAtZero: true
           }
         }]
