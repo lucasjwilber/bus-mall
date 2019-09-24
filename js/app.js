@@ -9,6 +9,7 @@ var previousProducts = [];
 var currentProducts = [];
 var displayArea = document.getElementById('displayArea');
 displayArea.addEventListener('click', productSelected);
+var currentChart;
 
 
 
@@ -29,7 +30,6 @@ function Product(name, image) {
 
 
 function randomProduct() {
-  //may need to revise this, not sure if it's min-max inclusive?
   var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
 }
@@ -42,19 +42,17 @@ function selectRandomProducts() {
   //remove the previous one first
   resetImages();
 
-  //select a random product X many times
   for (var i = 0; i < numberOfOptions; i++) {
     var productImage = document.createElement('img');
-    //select a random product from the catalog
+
     do {
       var product = randomProduct();
     } while (
-      //if the product is a duplicate or was in last selection, retry
       (product.isDuplicate === true) || (product.isRepeat === true)
     );
     //once a product is selected, mark it as a duplicate for this round
-    product.views++;
     product.isDuplicate = true;
+    product.views++;
     currentProducts.push(product);
     productImage.src = product.image;
     displayArea.appendChild(productImage);
@@ -87,6 +85,13 @@ function resetImages() {
   }
 }
 
+function resetResultsForm() {
+  var resultsChild = resultsArea.firstElementChild;
+  while (resultsChild) {
+    resultsChild.remove();
+    resultsChild = resultsArea.firstElementChild;
+  }
+}
 
 
 
@@ -96,6 +101,7 @@ function productSelected(event) {
     var selection = event.target.src.split('img/');
     currentRound++;
 
+    //compare clicked-on image with every catalog image :/
     for (var i = 0; i < catalog.length; i++) {
       if (selection[1] === catalog[i].image.split('/')[1]) {
         catalog[i].clicks++;
@@ -105,7 +111,8 @@ function productSelected(event) {
     if (currentRound < numberOfRounds) {
       selectRandomProducts();
     } else {
-      renderResults();
+      renderChart();
+      //renderResults();
       displayArea.removeEventListener('click', productSelected);
     }
   } else {
@@ -116,26 +123,28 @@ function productSelected(event) {
 
 
 
+//commenting out the UL stuff for now. remember it gets called in productSelected()
 
-function renderResults() {
-  var ul = document.createElement('ul');
-  ul.textContent = 'Thanks for playing! Results:';
-  resultsArea.appendChild(ul);
+// function renderResults() {
+//   var ul = document.createElement('ul');
+//   ul.textContent = 'Thanks for playing! Results:';
+//   resultsArea.appendChild(ul);
 
-  for (var i = 0; i < catalog.length; i++) {
-    var li = document.createElement('li');
+//   for (var i = 0; i < catalog.length; i++) {
+//     var li = document.createElement('li');
 
-    //to avoid dividing by 0:
-    var percentage = 0;
-    if (catalog[i].clicks > 0) {
-      percentage = Math.round((catalog[i].clicks / catalog[i].views) * 100);
-    }
+//     //to avoid dividing by 0:
+//     var percentage = 0;
+//     if (catalog[i].clicks > 0) {
+//       percentage = Math.round((catalog[i].clicks / catalog[i].views) * 100);
+//     }
 
-    li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
-    ul.appendChild(li);
-  }
+//     li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
 
-}
+//     ul.appendChild(li);
+//   }
+//   renderChart();
+// }
 
 
 
@@ -146,11 +155,22 @@ roundsForm.addEventListener('submit', restartGame);
 
 function restartGame(event) {
   event.preventDefault();
-  currentRound = 0;
-  numberOfRounds = event.target.numberOfRoundsField.value;
-  numberOfOptions = event.target.numberOfOptionsField.value;
-  resetObjectValues();
-  selectRandomProducts();
+  //add event listener if it's gone:
+  displayArea.removeEventListener('click', productSelected);
+  displayArea.addEventListener('click', productSelected);
+
+  if (event.target.numberOfOptionsField.value <= catalog.length / 2) {
+    currentRound = 0;
+    numberOfRounds = event.target.numberOfRoundsField.value;
+    numberOfOptions = event.target.numberOfOptionsField.value;
+    resetObjectValues();
+    resetResultsForm();
+    selectRandomProducts();
+    //destroy the current chart if one exists:
+    if (currentChart) { currentChart.destroy(); }
+  } else {
+    alert('You\'re trying to get too many options!');
+  }
 }
 
 
@@ -194,3 +214,155 @@ new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
 
 selectRandomProducts();
+
+
+
+
+
+//chart:
+function renderChart() {
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var labelsArr = [];
+  for (var i = 0; i < catalog.length; i++) {
+    labelsArr.push(catalog[i].name);
+  }
+  var clickChartData = [];
+  for (var j = 0; j < catalog.length; j++) {
+    clickChartData.push(catalog[j].clicks);
+  }
+  var viewChartData = [];
+  for (var k = 0; k < catalog.length; k++) {
+    viewChartData.push(catalog[k].views);
+  }
+  var clicksChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labelsArr,
+      datasets: [{
+        label: 'Clicks',
+        data: clickChartData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Views',
+        data: viewChartData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      legend: {
+        labels: {
+          fontColor: 'white',
+          fontSize: 18
+        }
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: 'white',
+            fontSize: 18,
+            stepSize: 1,
+            beginAtZero: true
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            fontColor: 'white',
+            fontSize: 14,
+            stepSize: 1,
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+  currentChart = clicksChart;
+}
