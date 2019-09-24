@@ -1,0 +1,73 @@
+/*
+FONTS:
+headline: font-family: 'Monoton', cursive;
+subheader: font-family: 'Luckiest Guy', cursive;
+data: font-family: 'PT Sans Narrow', sans-serif;
+
+COLORS:
+darkest: #670500;
+dark: #C80A00;
+medium: #FF2B20;
+light: #FF8A84;
+lightest: #FFFFFF;
+*/
+body {
+  background-color: #C80A00;
+}
+#gameBox {
+  width: 960px;
+  margin: 30px auto;
+  background-color: #FF2B20;
+  text-align: center;
+}
+img {
+  width: 200px;
+  float: left;
+  margin: 10px;
+}
+header {
+  background-color: #C80A00;
+  width: 100%;
+  margin-top: 30px;
+}
+p {
+  width: 100%;
+  margin: 0 auto;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 30px;
+  color: lightgoldenrodyellow;
+}
+#displayArea {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: #C80A00;
+}
+h1 {
+  font-size: 100px;
+  color: yellow;
+  font-family: 'Monoton', cursive;
+}
+#results {
+  width: 40%;
+  margin: 10px auto;
+  background-color: #FF8A84;
+  color: #670500;
+  font-size: 20px;
+  font-family: 'PT Sans Narrow', sans-serif;
+}
+li {
+  padding: 3px;
+}
+#roundsForm {
+  position: absolute;
+  top: 20;
+  left: 20;
+}
+#roundsForm, input {
+  margin-left: 5px;
+  margin-bottom: 3px;
+  font-family: 'PT Sans Narrow', sans-serif;
+  color: #FFFFFF;
+  background-color:  #C80A00;
+}
