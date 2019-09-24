@@ -9,7 +9,6 @@ var previousProducts = [];
 var currentProducts = [];
 var displayArea = document.getElementById('displayArea');
 displayArea.addEventListener('click', productSelected);
-var canvas = document.getElementById('myChart');
 var currentChart;
 
 
@@ -170,7 +169,7 @@ function restartGame(event) {
     //destroy the current chart if one exists:
     if (currentChart) { currentChart.destroy(); }
   } else {
-    alert(`You're trying to get too many options!`);
+    alert('You\'re trying to get too many options!');
   }
 }
 
@@ -228,12 +227,12 @@ function renderChart() {
     labelsArr.push(catalog[i].name);
   }
   var clickChartData = [];
-  for (var i = 0; i < catalog.length; i++) {
-    clickChartData.push(catalog[i].clicks);
+  for (var j = 0; j < catalog.length; j++) {
+    clickChartData.push(catalog[j].clicks);
   }
   var viewChartData = [];
-  for (var i = 0; i < catalog.length; i++) {
-    viewChartData.push(catalog[i].views);
+  for (var k = 0; k < catalog.length; k++) {
+    viewChartData.push(catalog[k].views);
   }
   var clicksChart = new Chart(ctx, {
     type: 'bar',
@@ -341,14 +340,14 @@ function renderChart() {
     options: {
       legend: {
         labels: {
-          fontColor: "white",
+          fontColor: 'white',
           fontSize: 18
         }
       },
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: "white",
+            fontColor: 'white',
             fontSize: 18,
             stepSize: 1,
             beginAtZero: true
@@ -356,7 +355,7 @@ function renderChart() {
         }],
         xAxes: [{
           ticks: {
-            fontColor: "white",
+            fontColor: 'white',
             fontSize: 14,
             stepSize: 1,
             beginAtZero: true
