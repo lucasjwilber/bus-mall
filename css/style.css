@@ -11,13 +11,10 @@ medium: #FF2B20;
 light: #FF8A84;
 lightest: #FFFFFF;
 */
-body {
-  background-color: #C80A00;
-}
+
 #gameBox {
   width: 960px;
   margin: 30px auto;
-  background-color: #FF2B20;
   text-align: center;
 }
 img {
@@ -26,7 +23,6 @@ img {
   margin: 10px;
 }
 header {
-  background-color: #C80A00;
   width: 100%;
   margin-top: 30px;
 }
@@ -35,19 +31,19 @@ p {
   margin: 0 auto;
   font-family: 'Luckiest Guy', cursive;
   font-size: 30px;
-  color: lightgoldenrodyellow;
 }
 #displayArea {
   width: 100%;
+  height: 300px;
   margin: 0 auto;
+  margin-top: 30px;
   overflow: hidden;
-  background-color: #C80A00;
 }
 h1 {
   font-size: 100px;
-  color: yellow;
   font-family: 'Monoton', cursive;
 }
+/* this is the results ul:
 #results {
   width: 40%;
   margin: 10px auto;
@@ -58,7 +54,7 @@ h1 {
 }
 li {
   padding: 3px;
-}
+} */
 #roundsForm {
   position: absolute;
   top: 20;
@@ -69,8 +65,7 @@ li {
   margin-bottom: 3px;
   font-family: 'PT Sans Narrow', sans-serif;
   color: #FFFFFF;
-  background-color:  #C80A00;
 }
 canvas {
-  background-color: white;
+  margin-top: 50px;
 }
