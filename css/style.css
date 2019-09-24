@@ -71,3 +71,6 @@ li {
   color: #FFFFFF;
   background-color:  #C80A00;
 }
+canvas {
+  background-color: white;
+}

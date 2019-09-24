@@ -29,7 +29,6 @@ function Product(name, image) {
 
 
 function randomProduct() {
-  //may need to revise this, not sure if it's min-max inclusive?
   var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
 }
@@ -42,19 +41,17 @@ function selectRandomProducts() {
   //remove the previous one first
   resetImages();
 
-  //select a random product X many times
   for (var i = 0; i < numberOfOptions; i++) {
     var productImage = document.createElement('img');
-    //select a random product from the catalog
+
     do {
       var product = randomProduct();
     } while (
-      //if the product is a duplicate or was in last selection, retry
       (product.isDuplicate === true) || (product.isRepeat === true)
     );
     //once a product is selected, mark it as a duplicate for this round
-    product.views++;
     product.isDuplicate = true;
+    product.views++;
     currentProducts.push(product);
     productImage.src = product.image;
     displayArea.appendChild(productImage);
@@ -87,6 +84,13 @@ function resetImages() {
   }
 }
 
+function resetResultsForm() {
+  var resultsChild = resultsArea.firstElementChild;
+  while (resultsChild) {
+    resultsChild.remove();
+    resultsChild = resultsArea.firstElementChild;
+  }
+}
 
 
 
@@ -96,6 +100,7 @@ function productSelected(event) {
     var selection = event.target.src.split('img/');
     currentRound++;
 
+    //compare clicked-on image with every catalog image :/
     for (var i = 0; i < catalog.length; i++) {
       if (selection[1] === catalog[i].image.split('/')[1]) {
         catalog[i].clicks++;
@@ -132,9 +137,9 @@ function renderResults() {
     }
 
     li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
+
     ul.appendChild(li);
   }
-
 }
 
 
@@ -146,11 +151,22 @@ roundsForm.addEventListener('submit', restartGame);
 
 function restartGame(event) {
   event.preventDefault();
-  currentRound = 0;
-  numberOfRounds = event.target.numberOfRoundsField.value;
-  numberOfOptions = event.target.numberOfOptionsField.value;
-  resetObjectValues();
-  selectRandomProducts();
+
+  //add event listener if it's gone:
+  displayArea.removeEventListener('click', productSelected);
+  displayArea.addEventListener('click', productSelected);
+
+
+  if (event.target.numberOfOptionsField.value <= catalog.length / 2) {
+    currentRound = 0;
+    numberOfRounds = event.target.numberOfRoundsField.value;
+    numberOfOptions = event.target.numberOfOptionsField.value;
+    resetObjectValues();
+    resetResultsForm();
+    selectRandomProducts();
+  } else {
+    alert(`You're trying to get too many options!`);
+  }
 }
 
 
@@ -194,3 +210,50 @@ new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
 
 selectRandomProducts();
+
+
+
+
+
+//chart:
+var ctx = document.getElementById('myChart').getContext('2d');
+var labelsArr = [];
+for (var i = 0; i < catalog.length; i++) {
+  labelsArr.push(catalog[i]);
+}
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: labelsArr,
+    datasets: [{
+      label: '# of Clicks',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
