@@ -13,6 +13,8 @@ lightest: #728DA5;
 */
 body {
   background-image: linear-gradient(rgb(172, 183, 192), #2A4F6E);
+  height: 800px;
+  overflow: hidden;
 }
 #gameBox {
   width: 960px;
@@ -38,9 +40,9 @@ p {
 }
 #displayArea {
   width: 100%;
-  height: 300px;
+  position: absolute;
   margin: 0 auto;
-  margin-top: 30px;
+  top: 200px;
   overflow: hidden;
 }
 h1 {
@@ -48,18 +50,6 @@ h1 {
   font-family: 'Monoton', cursive;
   color: white;
 }
-/* this is the results ul:
-#results {
-  width: 40%;
-  margin: 10px auto;
-  background-color: #FF8A84;
-  color: #670500;
-  font-size: 20px;
-  font-family: 'PT Sans Narrow', sans-serif;
-}
-li {
-  padding: 3px;
-} */
 #roundsForm {
   position: absolute;
   top: 20;
@@ -72,7 +62,7 @@ li {
   color: #2A4F6E;
 }
 canvas {
-  margin-top: 50px;
+  /* position: absolute; */
 }
 @keyframes spin {
   from {

@@ -3,7 +3,6 @@
 var numberOfRounds = 25;
 var currentRound = 0;
 var catalog = [];
-var resultsArea = document.getElementById('results');
 var numberOfOptions = 3;
 var previousProducts = [];
 var currentProducts = [];
@@ -85,14 +84,6 @@ function resetImages() {
   }
 }
 
-function resetResultsForm() {
-  var resultsChild = resultsArea.firstElementChild;
-  while (resultsChild) {
-    resultsChild.remove();
-    resultsChild = resultsArea.firstElementChild;
-  }
-}
-
 
 
 
@@ -111,8 +102,8 @@ function productSelected(event) {
     if (currentRound < numberOfRounds) {
       selectRandomProducts();
     } else {
+      resetImages();
       renderChart();
-      //renderResults();
       displayArea.removeEventListener('click', productSelected);
     }
   } else {
@@ -120,31 +111,6 @@ function productSelected(event) {
   }
 }
 
-
-
-
-//commenting out the UL stuff for now. remember it gets called in productSelected()
-
-// function renderResults() {
-//   var ul = document.createElement('ul');
-//   ul.textContent = 'Thanks for playing! Results:';
-//   resultsArea.appendChild(ul);
-
-//   for (var i = 0; i < catalog.length; i++) {
-//     var li = document.createElement('li');
-
-//     //to avoid dividing by 0:
-//     var percentage = 0;
-//     if (catalog[i].clicks > 0) {
-//       percentage = Math.round((catalog[i].clicks / catalog[i].views) * 100);
-//     }
-
-//     li.textContent = `${catalog[i].name}: ${catalog[i].clicks} clicks, ${catalog[i].views} views. Picked ${percentage}% of the time}`;
-
-//     ul.appendChild(li);
-//   }
-//   renderChart();
-// }
 
 
 
@@ -164,7 +130,6 @@ function restartGame(event) {
     numberOfRounds = event.target.numberOfRoundsField.value;
     numberOfOptions = event.target.numberOfOptionsField.value;
     resetObjectValues();
-    resetResultsForm();
     selectRandomProducts();
     //destroy the current chart if one exists:
     if (currentChart) { currentChart.destroy(); }
