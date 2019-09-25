@@ -16,7 +16,7 @@
       <input type="number" value="3" name="numberOfOptionsField" required><br>
       Number of rounds:<br>
       <input type="number" value="25" name="numberOfRoundsField" required><br>
-      <input type="submit" value="Restart Game" name="resetButton">
+      <input type="submit" value="Restart Game" name="resetButton" id="reset-button">
     </fieldset>
   </form>
 
@@ -30,13 +30,16 @@
 
     <main id="displayArea"></main>
 
-    <section id="results"></section>
+
+
+    <section id="testSection"></section>
 
 
 
     <canvas id="myChart" width="400" height="200"></canvas>
 
   </div>
+  <section id="results"></section>
 
   <script src="node_modules/chart.js/dist/Chart.bundle.js"></script>
   <script src="js/app.js"></script>
