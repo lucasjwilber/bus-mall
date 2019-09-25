@@ -14,6 +14,7 @@ var currentChart;
 
 
 
+
 function Product(name, image) {
   this.name = name;
   this.image = image;
@@ -21,7 +22,9 @@ function Product(name, image) {
   this.views = 0;
   this.isDuplicate = false;
   this.isRepeat = false;
+  //add this to the catalog and update the local storage too
   catalog.push(this);
+  localStorage.setItem('storedData', JSON.stringify(catalog));
 }
 
 
@@ -32,7 +35,6 @@ function randomProduct() {
   var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
 }
-
 
 
 
@@ -51,7 +53,9 @@ function selectRandomProducts() {
     );
     //once a product is selected, mark it as a duplicate for this round
     product.isDuplicate = true;
+
     product.views++;
+
     currentProducts.push(product);
     productImage.src = product.image;
     displayArea.appendChild(productImage);
@@ -68,8 +72,10 @@ function selectRandomProducts() {
     previousProducts[k].isRepeat = false;
   }
   //now that previousProducts has fulfilled its purpose, update/replace it with contents of currentProducts and reset currentProducts
+  localStorage.setItem('storedData', catalog);
   previousProducts = currentProducts;
   currentProducts = [];
+
 }
 
 
@@ -98,6 +104,8 @@ function productSelected(event) {
         catalog[i].clicks++;
       }
     }
+    // //update local storage for current game to update the clicks
+    // localStorage.setItem('storedData', JSON.stringify(catalog));
 
     if (currentRound < numberOfRounds) {
       selectRandomProducts();
@@ -105,6 +113,7 @@ function productSelected(event) {
       resetImages();
       renderChart();
       displayArea.removeEventListener('click', productSelected);
+      localStorage.setItem('storedData', JSON.stringify(catalog));
     }
   } else {
     console.log('nothing of importance was clicked on');
@@ -146,8 +155,9 @@ function resetObjectValues() {
   for (var l = 0; l < catalog.length; l++) {
     catalog[l].isRepeat = false;
     catalog[l].isDuplicate = false;
-    catalog[l].clicks = 0;
-    catalog[l].views = 0;
+    //commenting this out to implement local storage
+    // catalog[l].clicks = 0;
+    // catalog[l].views = 0;
     previousProducts = [];
     currentProducts = [];
   }
@@ -157,47 +167,24 @@ function resetObjectValues() {
 
 
 
-new Product('bag', 'img/bag.jpg');
-new Product('banana', 'img/banana.jpg');
-new Product('bathroom', 'img/bathroom.jpg');
-new Product('boots', 'img/boots.jpg');
-new Product('breakfast', 'img/breakfast.jpg');
-new Product('bubblegum', 'img/bubblegum.jpg');
-new Product('chair', 'img/chair.jpg');
-new Product('cthulhu', 'img/cthulhu.jpg');
-new Product('dog-duck', 'img/dog-duck.jpg');
-new Product('dragon', 'img/dragon.jpg');
-new Product('pen', 'img/pen.jpg');
-new Product('pet-sweep', 'img/pet-sweep.jpg');
-new Product('scissors', 'img/scissors.jpg');
-new Product('shark', 'img/shark.jpg');
-new Product('sweep', 'img/sweep.png');
-new Product('tauntaun', 'img/tauntaun.jpg');
-new Product('unicorn', 'img/unicorn.jpg');
-new Product('usb', 'img/usb.gif');
-new Product('water-can', 'img/water-can.jpg');
-new Product('wine-glass', 'img/wine-glass.jpg');
-
-selectRandomProducts();
-
-
-
-
-
-//chart:
 function renderChart() {
+
+  //parse what's in local storage
+  var storedData = JSON.parse(localStorage.getItem('storedData'));
+
   var ctx = document.getElementById('myChart').getContext('2d');
+
   var labelsArr = [];
-  for (var i = 0; i < catalog.length; i++) {
-    labelsArr.push(catalog[i].name);
+  for (var i = 0; i < storedData.length; i++) {
+    labelsArr.push(storedData[i].name);
   }
   var clickChartData = [];
-  for (var j = 0; j < catalog.length; j++) {
-    clickChartData.push(catalog[j].clicks);
+  for (var j = 0; j < storedData.length; j++) {
+    clickChartData.push(storedData[j].clicks);
   }
   var viewChartData = [];
-  for (var k = 0; k < catalog.length; k++) {
-    viewChartData.push(catalog[k].views);
+  for (var k = 0; k < storedData.length; k++) {
+    viewChartData.push(storedData[k].views);
   }
   var clicksChart = new Chart(ctx, {
     type: 'bar',
@@ -331,3 +318,36 @@ function renderChart() {
   });
   currentChart = clicksChart;
 }
+
+
+
+
+
+
+new Product('bag', 'img/bag.jpg');
+new Product('banana', 'img/banana.jpg');
+new Product('bathroom', 'img/bathroom.jpg');
+new Product('boots', 'img/boots.jpg');
+new Product('breakfast', 'img/breakfast.jpg');
+new Product('bubblegum', 'img/bubblegum.jpg');
+new Product('chair', 'img/chair.jpg');
+new Product('cthulhu', 'img/cthulhu.jpg');
+new Product('dog-duck', 'img/dog-duck.jpg');
+new Product('dragon', 'img/dragon.jpg');
+new Product('pen', 'img/pen.jpg');
+new Product('pet-sweep', 'img/pet-sweep.jpg');
+new Product('scissors', 'img/scissors.jpg');
+new Product('shark', 'img/shark.jpg');
+new Product('sweep', 'img/sweep.png');
+new Product('tauntaun', 'img/tauntaun.jpg');
+new Product('unicorn', 'img/unicorn.jpg');
+new Product('usb', 'img/usb.gif');
+new Product('water-can', 'img/water-can.jpg');
+new Product('wine-glass', 'img/wine-glass.jpg');
+
+
+
+
+
+//start game
+selectRandomProducts();
