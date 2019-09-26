@@ -7,9 +7,12 @@ var previousProducts = [];
 var currentProducts = [];
 var displayArea = document.getElementById('displayArea');
 displayArea.addEventListener('click', productSelected);
+var headline = document.getElementById('headline');
 var currentChart;
-
+var roundsForm = document.getElementById('roundsForm');
+roundsForm.addEventListener('submit', restartGame);
 var catalog = [];
+//if there's a catalog array already in local storage, use that data, otherwise make a new one:
 if (localStorage.getItem('catalog')) {
   catalog = JSON.parse(localStorage.getItem('catalog'));
 } else {
@@ -56,7 +59,6 @@ function Product(name, image) {
 
 
 
-
 function randomProduct() {
   var randomNumber = Math.floor(Math.random() * (catalog.length));
   return catalog[randomNumber];
@@ -64,15 +66,16 @@ function randomProduct() {
 
 
 
-
 function selectRandomProducts() {
   //remove the previous ones first
   resetImages();
+  headline.textContent = "Of the products below, which would you be most likely to buy?";
 
   //select X random products, where x = numberOfOptions
   for (var i = 0; i < numberOfOptions; i++) {
     var productImage = document.createElement('img');
 
+    //keep getting random products until they aren't duplicates or repeats
     do {
       var product = randomProduct();
     } while (
@@ -80,8 +83,6 @@ function selectRandomProducts() {
     );
     //once a product is selected, mark it as a duplicate for this round
     product.isDuplicate = true;
-
-    product.views++;
 
     currentProducts.push(product);
     productImage.src = product.image;
@@ -106,8 +107,6 @@ function selectRandomProducts() {
 
 
 
-
-
 function resetImages() {
   var displayAreaChild = displayArea.firstElementChild;
   while (displayAreaChild) {
@@ -115,7 +114,6 @@ function resetImages() {
     displayAreaChild = displayArea.firstElementChild;
   }
 }
-
 
 
 
@@ -131,6 +129,11 @@ function productSelected(event) {
       }
     }
 
+    //update views counter for each image that was displayed:
+    for (var i = 0; i < previousProducts.length; i++) {
+      previousProducts[i].views++;
+    }
+
     if (currentRound < numberOfRounds) {
       selectRandomProducts();
     } else {
@@ -144,12 +147,6 @@ function productSelected(event) {
 }
 
 
-
-
-
-//forms stuff:
-var roundsForm = document.getElementById('roundsForm');
-roundsForm.addEventListener('submit', restartGame);
 
 function restartGame(event) {
   event.preventDefault();
@@ -172,8 +169,6 @@ function restartGame(event) {
 
 
 
-
-
 function resetObjectValues() {
   for (var l = 0; l < catalog.length; l++) {
     catalog[l].isRepeat = false;
@@ -185,12 +180,13 @@ function resetObjectValues() {
 
 
 
-
-
 function renderChart() {
 
+  //update the local storage to reflect the results of this game.
   localStorage.setItem('catalog', JSON.stringify(catalog));
 
+  headline.textContent = "Here are the results:";
+  
 
   var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -338,14 +334,6 @@ function renderChart() {
   });
   currentChart = clicksChart;
 }
-
-
-
-
-
-
-
-
 
 
 
