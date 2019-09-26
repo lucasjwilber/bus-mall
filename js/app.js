@@ -12,46 +12,39 @@ var currentChart;
 var roundsForm = document.getElementById('roundsForm');
 roundsForm.addEventListener('submit', restartGame);
 var catalog = [];
-//if there's a catalog array already in local storage, use that data, otherwise make a new one:
-if (localStorage.getItem('catalog')) {
-  catalog = JSON.parse(localStorage.getItem('catalog'));
-} else {
-  populateCatalog();
-}
+
 
 
 function populateCatalog() {
-  new Product('bag', 'img/bag.jpg');
-  new Product('banana', 'img/banana.jpg');
-  new Product('bathroom', 'img/bathroom.jpg');
-  new Product('boots', 'img/boots.jpg');
-  new Product('breakfast', 'img/breakfast.jpg');
-  new Product('bubblegum', 'img/bubblegum.jpg');
-  new Product('chair', 'img/chair.jpg');
-  new Product('cthulhu', 'img/cthulhu.jpg');
-  new Product('dog-duck', 'img/dog-duck.jpg');
-  new Product('dragon', 'img/dragon.jpg');
-  new Product('pen', 'img/pen.jpg');
-  new Product('pet-sweep', 'img/pet-sweep.jpg');
-  new Product('scissors', 'img/scissors.jpg');
-  new Product('shark', 'img/shark.jpg');
-  new Product('sweep', 'img/sweep.png');
-  new Product('tauntaun', 'img/tauntaun.jpg');
-  new Product('unicorn', 'img/unicorn.jpg');
-  new Product('usb', 'img/usb.gif');
-  new Product('water-can', 'img/water-can.jpg');
-  new Product('wine-glass', 'img/wine-glass.jpg');
+  new Product('bag', 'img/bag.jpg', 0, 0);
+  new Product('banana', 'img/banana.jpg', 0, 0);
+  new Product('bathroom', 'img/bathroom.jpg', 0, 0);
+  new Product('boots', 'img/boots.jpg', 0, 0);
+  new Product('breakfast', 'img/breakfast.jpg', 0, 0);
+  new Product('bubblegum', 'img/bubblegum.jpg', 0, 0);
+  new Product('chair', 'img/chair.jpg', 0, 0);
+  new Product('cthulhu', 'img/cthulhu.jpg', 0, 0);
+  new Product('dog-duck', 'img/dog-duck.jpg', 0, 0);
+  new Product('dragon', 'img/dragon.jpg', 0, 0);
+  new Product('pen', 'img/pen.jpg', 0, 0);
+  new Product('pet-sweep', 'img/pet-sweep.jpg', 0, 0);
+  new Product('scissors', 'img/scissors.jpg', 0, 0);
+  new Product('shark', 'img/shark.jpg', 0, 0);
+  new Product('sweep', 'img/sweep.png', 0, 0);
+  new Product('tauntaun', 'img/tauntaun.jpg', 0, 0);
+  new Product('unicorn', 'img/unicorn.jpg', 0, 0);
+  new Product('usb', 'img/usb.gif', 0, 0);
+  new Product('water-can', 'img/water-can.jpg', 0, 0);
+  new Product('wine-glass', 'img/wine-glass.jpg', 0, 0);
 }
 
 
 
-function Product(name, image) {
+function Product(name, image, clicks, views) {
   this.name = name;
   this.image = image;
-  this.clicks = 0;
-  this.totalClicks = 0;
-  this.views = 0;
-  this.totalViews = 0;
+  this.clicks = clicks;
+  this.views = views;
   this.isDuplicate = false;
   this.isRepeat = false;
   catalog.push(this);
@@ -186,7 +179,7 @@ function renderChart() {
   localStorage.setItem('catalog', JSON.stringify(catalog));
 
   headline.textContent = "Here are the results:";
-  
+
 
   var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -333,6 +326,18 @@ function renderChart() {
     }
   });
   currentChart = clicksChart;
+}
+
+
+
+//if there's a catalog array already in local storage, use that data to construct Product objects, otherwise make a new one:
+if (localStorage.getItem('catalog')) {
+  var storedData = JSON.parse(localStorage.getItem('catalog'));
+  for (var i = 0; i < storedData.length; i++) {
+    new Product(storedData[i].name, storedData[i].image, storedData[i].clicks, storedData[i].views);
+  }
+} else {
+  populateCatalog();
 }
 
 
